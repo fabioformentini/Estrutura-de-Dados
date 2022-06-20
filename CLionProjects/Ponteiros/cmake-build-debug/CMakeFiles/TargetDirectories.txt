@@ -1,0 +1,3 @@
+/home/basis/CLionProjects/Ponteiros/cmake-build-debug/CMakeFiles/Ponteiros.dir
+/home/basis/CLionProjects/Ponteiros/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/basis/CLionProjects/Ponteiros/cmake-build-debug/CMakeFiles/rebuild_cache.dir
