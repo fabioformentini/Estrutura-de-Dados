@@ -38,9 +38,6 @@ void inserirNaArvore(ArvoreBinaria *arvoreBinaria, Contato *novoContato) {
     }
     //! Caso não for nula...
     int retornoComparacao = strcmp(novoContato->nome, arvoreBinaria->raiz->nome);
-    //? se retornoComparacao < 0 = nome do novo contato  < nome do contato que está na raiz
-    //? se retornoComparacao > 0 = nome do novo contato > nome do contato que está na raiz
-    //? se retornoComparacao = 0 = nome do novo contato é igual ao nome que está na raiz
     //! O contato que será inserido é menor que o que está na raiz, portanto, deve ser inserido na esquerda
     if (retornoComparacao < 0) {
         inserirNaEsquerda(arvoreBinaria->raiz, novoContato);
@@ -53,7 +50,7 @@ void inserirNaArvore(ArvoreBinaria *arvoreBinaria, Contato *novoContato) {
     }
     //! O contato que será inserido é igual ao contato que está na raiz
     if (retornoComparacao == 0) {
-        //TODO: terminar função caso os nomes sejam iguais
+        printf("\nO contato já existe!\n");
         return;
     }
 
@@ -80,7 +77,7 @@ void inserirNaEsquerda(Contato *contato, Contato *novoContato) {
     }
     //! Se o nome que eu quero inserir for igual ao buscado:
     if (retornoComparacao == 0) {
-        //TODO: terminar função caso os nomes sejam iguais
+        printf("\nO contato já existe!\n");
         return;
     }
 
@@ -108,17 +105,16 @@ void inserirNaDireita(Contato *contato, Contato *novoContato) {
         return;
     }
     if (retornoComparacao == 0) {
-        //TODO: terminar função caso os nomes sejam iguais
+        printf("\nO contato já existe!\n");
         return;
     }
-
 }
 
 //! Função para imprimir a árvore percorrendo seus elementos a partir da raiz que é passada
 void imprimirArvore(Contato *raiz) {
     if (raiz != NULL) {
         imprimirArvore(raiz->esquerda);
-        printf("Nome: %s\n", raiz->nome);
+        printf("\nNome: %s\n", raiz->nome);
         printf("Telefone: %s\n", raiz->telefone);
         imprimirArvore(raiz->direita);
     }
@@ -126,24 +122,28 @@ void imprimirArvore(Contato *raiz) {
 }
 
 void buscarContatoPorNome(Contato *raiz, char nome[LIMITENOME]) {
+    //! Caso o nome buscado não seja encontrado
     if (raiz == NULL) {
         printf("\nO Contato não foi encontrado!\n");
         return;
     }
+    //! Nome encontrado:
     if (raiz->nome == nome) {
-        printf("O Contato buscado foi encontrado, seu telefone é: %s", raiz->telefone);
+        printf("\nO Contato buscado foi encontrado, seu telefone é: %s\n", raiz->telefone);
         return;
     }
-
+    //! Comparando o nome buscado com o que está sendo verificado
     int retornoComparacao = strcmp(nome, raiz->nome);
-
+    //! Caso sejam iguais:
     if (retornoComparacao == 0) {
-        printf("O contato buscado foi encontrado, seu telefone é: %s", raiz->telefone);
+        printf("\nO contato buscado foi encontrado, seu telefone é: %s\n", raiz->telefone);
         return;
     }
+    //! Caso o contato buscado seja alfabeticamente inferior ao que está sendo verificado:
     if (retornoComparacao < 0) {
         return buscarContatoPorNome(raiz->esquerda, nome);
     }
+    //! Caso o contato buscado seja alfabeticamente superior ao que está sendo verificado:
     if (retornoComparacao > 0) {
         return buscarContatoPorNome(raiz->direita, nome);
     }
@@ -182,52 +182,53 @@ Contato* removerDaArvore(Contato *raiz, char nome[LIMITENOME]){
     }
     //! Caso não seja:
     int retornoComparacao = strcmp(nome, raiz->nome);
-    //! Caso o contato que eu estou buscando seja igual ao contato percorrido
+    //! Caso o contato que eu estou buscando seja igual ao contato percorrido:
     if (retornoComparacao == 0){
-        //! caso o elemento seja um nó folha, ou seja, não possui elementos à esquerda e à direita
-        if(raiz->esquerda == NULL && raiz->direita == NULL){
-            free(raiz);
-            return NULL;
-        }
-        Contato *salvarFilho;
-        //! Caso o elemento possua filho à esquerda e à direita
-        if(raiz->direita != NULL && raiz->esquerda != NULL){
-            Contato *aux = raiz->esquerda;
-            while (aux->direita != NULL) {
-                aux = aux->direita;
-            }
-            Contato *inversao = criarContato(raiz->nome, raiz->telefone);
-            strcpy(raiz->nome, aux->nome);
-            strcpy(raiz->telefone, aux->telefone);
-            strcpy(aux->nome, inversao->nome);
-            strcpy(aux->telefone, inversao->telefone);
-
-            raiz->esquerda = removerDaArvore(raiz->esquerda, inversao->nome);
-            return raiz;
-        }
-        //! filho à esquerda
-        if(raiz->esquerda != NULL){
-            salvarFilho = raiz->esquerda;
-            return salvarFilho;
-        }
-        //! filho à direita:
-        if(raiz->direita != NULL){
-            salvarFilho = raiz->direita;
-            return salvarFilho;
-        }
+        removerContatoEncontrado(raiz, nome);
     }
-    //? se retornoComparacao < 0 = nome do novo contato  < nome do contato que está na raiz
-    //? se retornoComparacao > 0 = nome do novo contato > nome do contato que está na raiz
-    //? se retornoComparacao = 0 = nome do novo contato é igual ao nome que está na raiz
-    //! Caso o contato que eu estou buscando seja alfabeticamente menor que o contato percorrido
+    //! Caso o contato que eu estou buscando seja alfabeticamente menor que o contato percorrido:
     if (retornoComparacao < 0){
         raiz->esquerda = removerDaArvore(raiz->esquerda, nome);
         return raiz;
     }
-    //! Caso o contato que eu estou buscando seja alfabeticamente maior que o contato percorrido
+    //! Caso o contato que eu estou buscando seja alfabeticamente maior que o contato percorrido:
     if (retornoComparacao > 0){
         raiz->direita = removerDaArvore(raiz->direita, nome);
         return raiz;
     }
 
+}
+
+Contato* removerContatoEncontrado(Contato *raiz, char nome[LIMITENOME]){
+    //! caso o elemento seja um nó folha, ou seja, não possui elementos à esquerda e à direita
+    if(raiz->esquerda == NULL && raiz->direita == NULL){
+        free(raiz);
+        return NULL;
+    }
+    Contato *salvarFilho;
+    //! Caso o elemento possua filho à esquerda e à direita
+    if(raiz->direita != NULL && raiz->esquerda != NULL){
+        Contato *aux = raiz->esquerda;
+        while (aux->direita != NULL) {
+            aux = aux->direita;
+        }
+        Contato *inversao = criarContato(raiz->nome, raiz->telefone);
+        strcpy(raiz->nome, aux->nome);
+        strcpy(raiz->telefone, aux->telefone);
+        strcpy(aux->nome, inversao->nome);
+        strcpy(aux->telefone, inversao->telefone);
+
+        raiz->esquerda = removerDaArvore(raiz->esquerda, inversao->nome);
+        return raiz;
+    }
+    //! filho à esquerda
+    if(raiz->esquerda != NULL){
+        salvarFilho = raiz->esquerda;
+        return salvarFilho;
+    }
+    //! filho à direita:
+    if(raiz->direita != NULL){
+        salvarFilho = raiz->direita;
+        return salvarFilho;
+    }
 }

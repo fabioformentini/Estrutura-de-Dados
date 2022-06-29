@@ -27,22 +27,7 @@ void imprimirArvore(Contato *raiz);
 void buscarContatoPorNome(Contato *raiz, char nome[LIMITENOME]);
 void buscarContatoPorTelefone(Contato *raiz, char telefone[LIMITETELEFONE]);
 Contato* removerDaArvore(Contato *raiz, char nome[LIMITENOME]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Contato* removerContatoEncontrado(Contato *raiz, char nome[LIMITENOME]);
 
 
 #endif //ARVORE_BINARIA_ARVOREB_H
