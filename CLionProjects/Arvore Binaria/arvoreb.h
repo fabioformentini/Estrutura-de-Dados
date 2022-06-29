@@ -18,7 +18,14 @@ typedef struct{
 }ArvoreBinaria;
 
 ArvoreBinaria *criarArvore();
-
+Contato *criarContato(char nome[LIMITENOME], char telefone[LIMITETELEFONE]);
+Contato *lerContato();
+void inserirNaEsquerda(Contato *contato, Contato *novoContato);
+void inserirNaDireita(Contato *contato, Contato *novoContato );
+void inserirNaArvore(ArvoreBinaria *arvoreBinaria, Contato *novoContato);
+void imprimirArvore(Contato *raiz);
+void buscarContatoPorNome(Contato *raiz, char nome[LIMITENOME]);
+void buscarContatoPorTelefone(Contato *raiz, char telefone[LIMITETELEFONE]);
 
 
 

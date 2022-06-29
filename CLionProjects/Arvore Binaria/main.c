@@ -15,15 +15,20 @@ int main() {
                 printf("Programa finalizado");
                 break;
             case 1:
+                inserirNaArvore(arvoreContatos, lerContato());
                 break;
             case 2:
+                imprimirArvore(arvoreContatos->raiz);
                 break;
             case 3:
                 printf("Nome que deseja buscar: ");
                 scanf("%s", nomeBuscado);
+                buscarContatoPorNome(arvoreContatos->raiz, nomeBuscado);
                 break;
             case 4:
                 printf("Telefone que deseja buscar: ");
+                scanf("%s", telefoneBuscado);
+                buscarContatoPorTelefone(arvoreContatos->raiz, telefoneBuscado);
                 break;
             case 5:
                 printf("Nome do contato que deseja excluir: ");
