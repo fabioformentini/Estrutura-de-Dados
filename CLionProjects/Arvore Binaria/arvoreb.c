@@ -160,16 +160,74 @@ void buscarContatoPorTelefone(Contato *raiz, char telefone[LIMITETELEFONE]){
         return;
     }
 
-    //int retornoComparacao = strcmp(telefone, raiz->telefone);
+    int retornoComparacao = strcmp(telefone, raiz->telefone);
 
-    if (raiz->telefone == telefone) {
+    if (retornoComparacao == 0) {
         printf("O telefone buscado foi encontrado, seu portador é: %s", raiz->nome);
         return;
     }
-    if (raiz->esquerda->telefone != telefone) {
+    if (retornoComparacao < 0) {
         return buscarContatoPorTelefone(raiz->esquerda, telefone);
     }
-    if (raiz->direita->telefone != telefone) {
+    if (retornoComparacao > 0) {
         return buscarContatoPorTelefone(raiz->direita, telefone);
     }
+}
+
+Contato* removerDaArvore(Contato *raiz, char nome[LIMITENOME]){
+    //! Caso a raiz seja nula:
+    if (raiz == NULL){
+        printf("O contato não foi encontrado");
+        return NULL;
+    }
+    //! Caso não seja:
+    int retornoComparacao = strcmp(nome, raiz->nome);
+    //! Caso o contato que eu estou buscando seja igual ao contato percorrido
+    if (retornoComparacao == 0){
+        //! caso o elemento seja um nó folha, ou seja, não possui elementos à esquerda e à direita
+        if(raiz->esquerda == NULL && raiz->direita == NULL){
+            free(raiz);
+            return NULL;
+        }
+        Contato *salvarFilho;
+        //! Caso o elemento possua filho à esquerda e à direita
+        if(raiz->direita != NULL && raiz->esquerda != NULL){
+            Contato *aux = raiz->esquerda;
+            while (aux->direita != NULL) {
+                aux = aux->direita;
+            }
+            Contato *inversao = criarContato(raiz->nome, raiz->telefone);
+            strcpy(raiz->nome, aux->nome);
+            strcpy(raiz->telefone, aux->telefone);
+            strcpy(aux->nome, inversao->nome);
+            strcpy(aux->telefone, inversao->telefone);
+
+            raiz->esquerda = removerDaArvore(raiz->esquerda, inversao->nome);
+            return raiz;
+        }
+        //! filho à esquerda
+        if(raiz->esquerda != NULL){
+            salvarFilho = raiz->esquerda;
+            return salvarFilho;
+        }
+        //! filho à direita:
+        if(raiz->direita != NULL){
+            salvarFilho = raiz->direita;
+            return salvarFilho;
+        }
+    }
+    //? se retornoComparacao < 0 = nome do novo contato  < nome do contato que está na raiz
+    //? se retornoComparacao > 0 = nome do novo contato > nome do contato que está na raiz
+    //? se retornoComparacao = 0 = nome do novo contato é igual ao nome que está na raiz
+    //! Caso o contato que eu estou buscando seja alfabeticamente menor que o contato percorrido
+    if (retornoComparacao < 0){
+        raiz->esquerda = removerDaArvore(raiz->esquerda, nome);
+        return raiz;
+    }
+    //! Caso o contato que eu estou buscando seja alfabeticamente maior que o contato percorrido
+    if (retornoComparacao > 0){
+        raiz->direita = removerDaArvore(raiz->direita, nome);
+        return raiz;
+    }
+
 }

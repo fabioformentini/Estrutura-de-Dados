@@ -26,6 +26,7 @@ void inserirNaArvore(ArvoreBinaria *arvoreBinaria, Contato *novoContato);
 void imprimirArvore(Contato *raiz);
 void buscarContatoPorNome(Contato *raiz, char nome[LIMITENOME]);
 void buscarContatoPorTelefone(Contato *raiz, char telefone[LIMITETELEFONE]);
+Contato* removerDaArvore(Contato *raiz, char nome[LIMITENOME]);
 
 
 

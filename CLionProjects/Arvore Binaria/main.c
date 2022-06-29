@@ -33,6 +33,7 @@ int main() {
             case 5:
                 printf("Nome do contato que deseja excluir: ");
                 scanf("%s", nomeBuscado);
+                arvoreContatos->raiz = removerDaArvore(arvoreContatos->raiz, nomeBuscado);
                 break;
         }
     }
